@@ -4,20 +4,19 @@ const params = new URLSearchParams(window.location.search);
 
 let urlData  = params.get('id');
 
-console.log(urlData);
-
+//
 fetch  (url + "/" + urlData)
     .then((Response) => Response.json())
     .then ((data) => {
-        const image = document.getElementsByClassName('item_img');
+        const image = document.createElement("div")
+        document.querySelector(".item__img").appendChild(image)
         const title = document.getElementById('title');
         const price = document.getElementById('price');
         const description = document.getElementById('description');       
         const colors = document.getElementById('colors');
-        image.innerHtml = `<img src="${data.imageUrl}" alt="${data.altTxt}"`;        
+        image.innerHTML = `<img src="${data.imageUrl}" alt="${data.altTxt}">`                    
         title.innerHTML = `${data.name}`;
-        price.innerHTML = `${data.price}`;
-        
+        price.innerHTML = `${data.price}`;        
         description.innerHTML =`${data.description}`;
         for (color in data.colors) {            
             colors[colors.options.length] = new Option(data.colors[color])
@@ -48,18 +47,12 @@ addToCart.addEventListener("click", (event) => {
         descritpion : description.textContent,
         quantity : quantity.value,
     }
+
+    let productsSaveInStorage = JSON.parse(localStorage.getItem("products"));   
+    productsSaveInStorage = [];
+    productsSaveInStorage.push(selectProducts);
+    localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
     
-
-    let productsSaveInStorage = JSON.parse(localStorage.getItem("products"));
-
-    if(productsSaveInStorage){
-
-    }
-    else{
-        productsSaveInStorage = [];
-        productsSaveInStorage.push(selectProducts);
-        localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
-    }
 })
 
 
