@@ -62,7 +62,7 @@ addToCart.addEventListener("click", (event) => {
     else {
         for (i=0; i < productsSaveInStorage.length; i++)
         {
-            if(productsSaveInStorage[i]._id == selectProducts._id && productsSaveInStorage[i].colors == colors.value)
+            if(productsSaveInStorage[i]._id == selectProducts._id && productsSaveInStorage[i].color == selectProducts.color)
             {
                  productsSaveInStorage.quantity++;
                  localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
