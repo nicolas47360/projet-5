@@ -63,15 +63,14 @@ addToCart.addEventListener("click", (event) => {
         alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${selectProducts.title} de la couleur ${selectProducts.color}`)
     }
     
+    
     let productsSaveInStorage = JSON.parse(localStorage.getItem("products"));
     if ( productsSaveInStorage == null)
     {
         productsSaveInStorage = [];
         addProductsInStorage();
         addmessage();       
-    }
-    
-    
+    }  
     
     else
     {
@@ -84,13 +83,15 @@ addToCart.addEventListener("click", (event) => {
                 productsSaveInStorage[i].quantity = qStore + qProducts;
                 localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
                 addmessage();
-            }
-            else if (productsSaveInStorage[i].id === selectProducts.id && productsSaveInStorage.color != selectProducts.color)
-            {
+            }           
+        }
+        for (i=0; i < productsSaveInStorage.length; i++)
+        {
+            if(productsSaveInStorage[i].id === selectProducts.id && productsSaveInStorage[i].color != selectProducts.color)           
+            {   
                 addProductsInStorage();
                 addmessage();
             }
-
         }    
     }    
 });
