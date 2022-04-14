@@ -33,8 +33,10 @@ addToCart.addEventListener("click", (event) => {
     event.preventDefault();
     if (
         quantity.value <= 0 || quantity.value > 100
+        
     ){
         alert("La quantité selectionnée n'est pas valide")
+        
     }
 
     if( colors.value == "")
@@ -51,34 +53,41 @@ addToCart.addEventListener("click", (event) => {
     }
 
     // local storage
+    function addProductsInStorage()
+    {
+        productsSaveInStorage.push(selectProducts);
+        localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+    }
+
+    function addmessage(){
+        alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${selectProducts.title} de la couleur ${selectProducts.color}`)
+    }
+    
     let productsSaveInStorage = JSON.parse(localStorage.getItem("products"));
     if ( productsSaveInStorage == null)
     {
         productsSaveInStorage = [];
-        productsSaveInStorage.push(selectProducts);
-        localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+        addProductsInStorage();
+        addmessage();       
     } 
     
-    else {
+    else
+    {
         for (i=0; i < productsSaveInStorage.length; i++)
         {
-            if(productsSaveInStorage[i]._id == selectProducts._id && productsSaveInStorage[i].color == selectProducts.color)
-            {
-                 productsSaveInStorage.quantity++;
-                 localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+            if(productsSaveInStorage[i].id === selectProducts.id && productsSaveInStorage[i].color === selectProducts.color)
+            {               
+                productsSaveInStorage.quantity = productsSaveInStorage[i].quantity + selectProducts.quantity
+                localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
             }
             
-            //else (productsSaveInStorage[i]._id != selectProducts._id && productsSaveInStorage[i]._id != selectProducts.color)
-            //{
-            //    productsSaveInStorage.push(selectProducts.color);
-              //  localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
-            //}
+            else 
+            {
+                addProductsInStorage();
+                addmessage(); 
+             }
         }
-
-    }
-
-
-    
-})
+    }    
+});
 
 
