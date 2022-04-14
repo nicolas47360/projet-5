@@ -69,24 +69,29 @@ addToCart.addEventListener("click", (event) => {
         productsSaveInStorage = [];
         addProductsInStorage();
         addmessage();       
-    } 
+    }
+    
+    
     
     else
     {
         for (i=0; i < productsSaveInStorage.length; i++)
         {
-            if(productsSaveInStorage[i].id === selectProducts.id && productsSaveInStorage[i].color === selectProducts.color)
-            {               
-                productsSaveInStorage.quantity = productsSaveInStorage[i].quantity + selectProducts.quantity
+            if(productsSaveInStorage[i].id === selectProducts.id && productsSaveInStorage[i].color === selectProducts.color)           
+            {   
+                const qStore = parseInt(productsSaveInStorage[i].quantity, 10)
+                const qProducts = parseInt(selectProducts.quantity, 10)      
+                productsSaveInStorage[i].quantity = qStore + qProducts;
                 localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+                addmessage();
             }
-            
-            else 
+            else if (productsSaveInStorage[i].id === selectProducts.id && productsSaveInStorage.color != selectProducts.color)
             {
                 addProductsInStorage();
-                addmessage(); 
-             }
-        }
+                addmessage();
+            }
+
+        }    
     }    
 });
 
