@@ -14,7 +14,7 @@ class Product {
         this.description = description;
         this.quantity = parseInt(quantity, 10);
         this.image = image;
-        
+        this.texte = texte;        
     }
 }
 
@@ -31,8 +31,7 @@ fetch  (url + "/" + urlData)
         image.innerHTML = `<img src="${data.imageUrl}" alt="${data.altTxt}">`;                  
         title.innerHTML = `${data.name}`;
         price.innerHTML = `${data.price}`;         
-        description.innerHTML =`${data.description}`;
-        let images = data.imageUrl
+        description.innerHTML =`${data.description}`;   
         
         // 
         for (color in data.colors) {            
@@ -43,7 +42,7 @@ fetch  (url + "/" + urlData)
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
 const colors = document.getElementById('colors');
-let imageUrl = document.getElementsByClassName('item__image');
+let imageUrl = document.querySelector('.item__image');
 
 console.log(imageUrl)
 
