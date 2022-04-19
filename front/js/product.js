@@ -42,8 +42,7 @@ fetch  (url + "/" + urlData)
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
 const colors = document.getElementById('colors');
-let imageUrl = document.querySelector('.item__image');
-
+let imageUrl = document.querySelector('.item__img');
 console.log(imageUrl)
 
 
