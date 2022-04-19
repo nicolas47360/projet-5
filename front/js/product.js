@@ -13,8 +13,8 @@ class Product {
         this.price = price;
         this.description = description;
         this.quantity = parseInt(quantity, 10);
-        this.image = image;
-        this.texte = texte;        
+        this.imageUrl = image;
+        this.alttexte = texte;        
     }
 }
 
