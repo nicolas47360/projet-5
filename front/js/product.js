@@ -6,13 +6,15 @@ let urlData  = params.get('id');
 
 //instancition d'u  objet prennant plusieurs paramétres
 class Product {
-    constructor(id, color, title, price, description, quantity) {
+    constructor(id, color, title, price, description, quantity, image, texte) {
         this.id = id;
         this.color = color;
         this.title = title;
         this.price = price;
         this.description = description;
         this.quantity = parseInt(quantity, 10);
+        this.image = image;
+        
     }
 }
 
@@ -20,7 +22,7 @@ class Product {
 fetch  (url + "/" + urlData)
     .then((Response) => Response.json())
     .then ((data) => {
-        const image = document.createElement("div");
+        const image = document.createElement("div");               
         document.querySelector(".item__img").appendChild(image);
         const title = document.getElementById('title');
         const price = document.getElementById('price');
@@ -30,6 +32,8 @@ fetch  (url + "/" + urlData)
         title.innerHTML = `${data.name}`;
         price.innerHTML = `${data.price}`;         
         description.innerHTML =`${data.description}`;
+        let images = data.imageUrl
+        
         // 
         for (color in data.colors) {            
             colors[colors.options.length] = new Option(data.colors[color]);
@@ -39,6 +43,11 @@ fetch  (url + "/" + urlData)
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
 const colors = document.getElementById('colors');
+let imageUrl = document.getElementsByClassName('item__image');
+
+console.log(imageUrl)
+
+
 
 // évenement permettant l'ajout des produits au click du boutton avec gestion ds quantités et des couleurs
 addToCart.addEventListener("click", (event) => {
