@@ -28,11 +28,10 @@ fetch  (url + "/" + urlData)
         const price = document.getElementById('price');
         const description = document.getElementById('description');       
         const colors = document.getElementById('colors');
-        image.innerHTML = `<img src="${data.imageUrl}" alt="${data.altTxt}">`;                  
+        image.innerHTML = `<img id="item__img__url" src="${data.imageUrl}" alt="${data.altTxt}">`;                  
         title.innerHTML = `${data.name}`;
         price.innerHTML = `${data.price}`;         
-        description.innerHTML =`${data.description}`;   
-        
+        description.innerHTML =`${data.description}`;        
         // 
         for (color in data.colors) {            
             colors[colors.options.length] = new Option(data.colors[color]);
@@ -41,9 +40,9 @@ fetch  (url + "/" + urlData)
 
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
-const colors = document.getElementById('colors');
-let imageUrl = document.querySelector('.item__img');
+const imageUrl = document.getElementById('item__img__url');
 console.log(imageUrl)
+
 
 
 
@@ -59,7 +58,7 @@ addToCart.addEventListener("click", (event) => {
         alert("Veuillez séléctionnée une couleur")
     } 
     else { //si tout est ok on instancie la classe Product
-        selectProducts = new Product(urlData, colors.value, title.textContent, price.textContent, description.textContent, quantity.value);
+        selectProducts = new Product(urlData, colors.value, title.textContent, price.textContent, description.textContent, quantity.value, imageUrl);
         addProductsInStorage(selectProducts);
     }
 
