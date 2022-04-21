@@ -4,16 +4,18 @@ const params = new URLSearchParams(window.location.search);
 
 let urlData  = params.get('id');
 
+var imageUrl = ""
+
 //instancition d'u  objet prennant plusieurs paramétres
 class Product {
-    constructor(id, color, title, price, description, quantity, image, texte) {
+    constructor(id, color, title, price, description, quantity, imageUrl, texte) {
         this.id = id;
         this.color = color;
         this.title = title;
-        this.price = price;
+        this.price = parseInt(price, 10);
         this.description = description;
         this.quantity = parseInt(quantity, 10);
-        this.imageUrl = image;
+        this.imageUrl = imageUrl;
         this.alttexte = texte;        
     }
 }
@@ -24,11 +26,14 @@ fetch  (url + "/" + urlData)
     .then ((data) => {
         const image = document.createElement("div");               
         document.querySelector(".item__img").appendChild(image);
+        
         const title = document.getElementById('title');
         const price = document.getElementById('price');
         const description = document.getElementById('description');       
         const colors = document.getElementById('colors');
-        image.innerHTML = `<img id="item__img__url" src="${data.imageUrl}" alt="${data.altTxt}">`;                  
+        image.innerHTML = `<img id="item__img__url" src="${data.imageUrl}" alt="${data.altTxt}">`;
+        imageUrl = document.getElementById('item__img__url');
+        console.log(imageUrl.src)                
         title.innerHTML = `${data.name}`;
         price.innerHTML = `${data.price}`;         
         description.innerHTML =`${data.description}`;        
@@ -40,9 +45,6 @@ fetch  (url + "/" + urlData)
 
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
-const imageUrl = document.getElementById('item__img__url');
-console.log(imageUrl)
-
 
 
 
@@ -58,7 +60,7 @@ addToCart.addEventListener("click", (event) => {
         alert("Veuillez séléctionnée une couleur")
     } 
     else { //si tout est ok on instancie la classe Product
-        selectProducts = new Product(urlData, colors.value, title.textContent, price.textContent, description.textContent, quantity.value, imageUrl);
+        selectProducts = new Product(urlData, colors.value, title.textContent, price.textContent, description.textContent, quantity.value, imageUrl.src, imageUrl.alt);
         addProductsInStorage(selectProducts);
     }
 

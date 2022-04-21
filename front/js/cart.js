@@ -5,19 +5,20 @@ function saveProducts(product)
 
 function getProducts()
 {
+    
     return JSON.parse(localStorage.getItem("products"));
 }
 
 function removeProducts (product)
 {
-    let productsStorage = getBasket();
+    let productsStorage = getProducts();
     productsStorage = productsStorage.filter(p => p.id != product.id);    
     saveProducts(product);
 }
 
 function replaceQuantity(product, quantity)
 {
-    let productsStorage = getBasket();
+    let productsStorage = getProducts();
     productsStorage = productsStorage.find(p => p.id == product.id);
     productsStorage.quantity += quantity;
     if (productsStorage.quantity <= 0){
@@ -30,34 +31,32 @@ function replaceQuantity(product, quantity)
 
 function getNumberProduct()
 {
-    let productsStorage = getBasket();
-    let number = 0;
-    for (let product in productsStorage)
+    let productsStorage = getProducts();    
+    let totalQuantity = 0;
+    for (let product of productsStorage)
     {
-        number += product.quantity;
+       totalQuantity += product.quantity;
+       console.log(totalQuantity)
     }
-    return number
+    return totalQuantity
 }
 
 function getTotalPrice(){
-    let productsStorage = getBasket();
-    let price = 0;
-    for (let product in productsStorage)
+    let productsStorage = getProducts();    
+    let totalPrice = 0;
+    for (let product of productsStorage)
     {
-        number += product.price * product.quantity;
+        totalPrice += product.price * product.quantity;
+        console.log(totalPrice);       
     }
-    return price
+    return totalPrice    
 }
 
 let products = getProducts();
-console.log(products)
 
-for (product of products){
-    console.log(product);
-    let image = product.imageUrl;
-    console.log(image)
-    document.getElementById("cart__items");
-    
+
+for (let product of products){   
+    document.getElementById("cart__items");    
     cart__items.innerHTML +=`
     <article class="cart__item" data-id=${product.id} data-color="${product.color}">
     <div class="cart__item__img">
@@ -67,7 +66,7 @@ for (product of products){
     <div class="cart__item__content__description">
         <h2>${product.title}</h2>
         <p>${product.color}</p>
-        <p>${product.price}</p>
+        <p>${product.price + "€"}</p>
     </div>
     <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -83,6 +82,14 @@ for (product of products){
     `
 }
 
+let totalPrice = getTotalPrice()  
+const showPrice = document.getElementById('totalPrice');
+showPrice.innerHTML = totalPrice;
+
+let quantitys = getNumberProduct();
+console.log(quantitys)
+const showQuantitys = document.getElementById('totalQuantity');
+showQuantitys.innerHTML = quantitys;
 
 
 
