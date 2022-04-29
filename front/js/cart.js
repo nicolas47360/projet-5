@@ -119,7 +119,7 @@ replaceQuantity();
 
 let validateName = /^[A-Za-z.-]{2,40}$/;
 let validateEmail = /^[a-zA-Z0-9.-_]+[@}{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
-let validateCity = /^[A-Za-z0-9]$/;
+let validateCity = /^[A-Za-z0-9.-]$/;
 let validateAddress =/^[a-zA-Z0-9.-]$/;
 
 function validateForm(){
@@ -189,7 +189,7 @@ function validateForm(){
         function regExpEmail(){    
             const emailValid = contact.email;    
             const checkemail = document.getElementById('emailErrorMsg');    
-            if ( validateName.test(emailValid))
+            if ( validateEmail.test(emailValid))
             {
             
                 return true
@@ -200,8 +200,8 @@ function validateForm(){
         };
         
         function formCheck(){
-            if( regExpFirstName() && regExpLastName() && regExpAdress 
-             && regExpCity() && regExpEmail())
+            if( regExpFirstName() && regExpLastName() && regExpAdress() 
+                && regExpCity() && regExpEmail())
             {
                 return true;
             }
