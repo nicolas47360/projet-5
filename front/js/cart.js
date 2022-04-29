@@ -118,9 +118,9 @@ replaceQuantity();
 //--------------------------------------------------------------------------------------
 
 let validateName = /^[A-Za-z.-]{2,40}$/;
-let validateEmail = /^[a-zA-Z0-9.-_]+[@}{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
-let validateCity = /^[A-Za-z0-9.-]$/;
-let validateAddress =/^[a-zA-Z0-9.-]$/;
+let validateEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+let validateCity = /^[A-Za-z0-9\s]+$/;
+let validateAddress =/^[a-zA-Z0-9\s]+$/;
 
 function validateForm(){
     const order = document.getElementById('order');
@@ -160,7 +160,7 @@ function validateForm(){
             }
         };
         
-        function regExpAdress(){    
+        function regExpAddress(){    
             const adressValid = contact.address;    
             const checkadress = document.getElementById('addressErrorMsg');    
             if ( validateAddress.test(adressValid))
@@ -200,8 +200,7 @@ function validateForm(){
         };
         
         function formCheck(){
-            if( regExpFirstName() && regExpLastName() && regExpAdress() 
-                && regExpCity() && regExpEmail())
+            if( regExpFirstName() && regExpLastName() && regExpAddress() && regExpCity() && regExpEmail())
             {
                 return true;
             }
@@ -213,15 +212,16 @@ function validateForm(){
 
         formCheck();
 
-        const cartData = {
+
+        const Data = {
             method: "POST",
-            body : JSON.stringify(cartData),
+            body : JSON.stringify(contact),
             headers: {
                 "Content-Type": "application/json",
             }
         };
 
-        fetch("http://localhost:3000/api/products/order", cartData)
+        fetch("http://localhost:3000/api/products/order", Data)
         .then((response) => response.json())
         .then ((data) => 
         {
