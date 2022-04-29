@@ -6,7 +6,7 @@ fetch(url)
     .then((Response) => Response.json())
     .then((data) => {
       // iteration de l'array contenant les produits avec l'instruction for of 
-        for(product of data){
+        for(let product of data){
             const items = document.getElementById('items');
             // affichage du contenu dans le DOM
             items.innerHTML +=` 

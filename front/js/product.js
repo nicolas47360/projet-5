@@ -33,11 +33,11 @@ fetch  (url + "/" + urlData)
         const colors = document.getElementById('colors');
         image.innerHTML = `<img id="item__img__url" src="${data.imageUrl}" alt="${data.altTxt}">`;
         imageUrl = document.getElementById('item__img__url');
-        console.log(imageUrl.src)                
+                        
         title.innerHTML = `${data.name}`;
         price.innerHTML = `${data.price}`;         
-        description.innerHTML =`${data.description}`;        
-        // 
+        description.innerHTML =`${data.description}`;
+         
         for (color in data.colors) {            
             colors[colors.options.length] = new Option(data.colors[color]);
         }        
@@ -45,8 +45,6 @@ fetch  (url + "/" + urlData)
 
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
-
-
 
 // évenement permettant l'ajout des produits au click du boutton avec gestion ds quantités et des couleurs
 addToCart.addEventListener("click", (event) => {
@@ -63,6 +61,7 @@ addToCart.addEventListener("click", (event) => {
         selectProducts = new Product(urlData, colors.value, title.textContent, price.textContent, description.textContent, quantity.value, imageUrl.src, imageUrl.alt);
         addProductsInStorage(selectProducts);
     }
+});
 
     // function qui ajoute un produit au local storage
     function addProductsInStorage(selectProducts)
@@ -104,5 +103,5 @@ addToCart.addEventListener("click", (event) => {
     function addmessage(){
         window.alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${selectProducts.title} de la couleur ${selectProducts.color}`)
     }
-});
+
 
