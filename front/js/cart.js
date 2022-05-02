@@ -1,54 +1,58 @@
-let productsStorage = getProducts()
+let products = [];
+productsStorage = getProducts();
 
+// fonction permettant de sauvegarder les produits au format JSON dans le localstorage
 function saveProducts(product)
 {
-    localStorage.setItem("products", JSON.stringify(product))
+
+    localStorage.setItem("products", JSON.stringify(product));
 }
 
+// fonction permettant d'obtenir les produits contenus dans le localstorage
 function getProducts()
 {    
     return JSON.parse(localStorage.getItem("products"));
 }
 
+
+// fonction permettant de supprimer un produit lors du click sur le bouton supprimer
 function removeProducts ()
 {   
     deleteProducts = document.getElementsByClassName('deleteItem');
     for ( let i = 0; i < deleteProducts.length; i++)
     {
         deleteProducts[i].addEventListener("click", (event) =>{
-            event.preventDefault();
-            productsStorage = productsStorage.filter(p => p.id != productsStorage[i].id && p.color != productsStorage[i].color);          
+            event.preventDefault();            
+            productsStorage.splice(i, 1);                     
             saveProducts(productsStorage);
             alert("le produit a bien été supprimé");
-            window.location.href = "cart.html"
+            window.location.href = "cart.html";
         });      
     }   
 }
 
+//fonction permettant de modifier la quntité d'un produit lors du click
 function replaceQuantity()
 {
    let productsQuantity = document.getElementsByClassName('itemQuantity');
    for ( let q = 0; q < productsQuantity.length; q++)
        {            
         productsQuantity[q].addEventListener("click", (event) =>{
-            event.preventDefault();                                   
-            productsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);
-            console.log(productsStorage)                       
-            if (productsStorage.quantity > 0)
+            event.preventDefault();
+            //trouve le produit en fonction de son id et de sa couleur                                   
+            newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                                   
+            if (newproductsStorage.quantity > 0)
             {   
                 let newQuantity = parseInt(productsQuantity[q].value, 10);
-                productsStorage.quantity = newQuantity;
-                console.log(productsStorage.quantity);
-                console.log(productsStorage)                             
-                //alert("le produit a été modifié");
-                //saveProducts(productsStorage)
-                //window.location.href = "cart.html"
+                newproductsStorage.quantity = newQuantity;
+                productsStorage[q] = newproductsStorage;                                    
+                alert("le produit a été modifié");
+                saveProducts(productsStorage);
+                window.location.href = "cart.html";
             }
             else{
                 removeProducts();
-            }
-            
-            
+            }           
         });      
     }    
 }
@@ -76,6 +80,7 @@ function getTotalPrice(){
     }        
 }
 
+//fonction permettant l' affichage des données contenues dans le localstorage
 function showProducts(){
     for (let product of productsStorage){   
         document.getElementById("cart__items");    
@@ -102,11 +107,8 @@ function showProducts(){
         </div>
         </article>
         `
-    }
+        }
 }
-
-
-
     
 getTotalPrice();
 getQuantityProduct();
@@ -115,17 +117,17 @@ removeProducts();
 replaceQuantity();
 
 
-//--------------------------------------------------------------------------------------
+//----------------------------FORMULAIRE----------------------------------------------------------
 
 let validateName = /^[A-Za-z.-]{2,40}$/;
-let validateEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
-let validateCity = /^[A-Za-z0-9\s]+$/;
+let validateEmail = /^[a-zA-Z0-9.-_+]+[@]{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+let validateCity = /^[A-Za-z-0-9éèê,\s]+$/;
 let validateAddress =/^[a-zA-Z0-9\s]+$/;
 
 function validateForm(){
     const order = document.getElementById('order');
     order.addEventListener("click", (event) => {
-        event.preventDefault();
+        event.preventDefault();        
         const contact = {
             fisrtName: document.getElementById("firstName").value,
             lastName: document.getElementById("lastName").value,
@@ -163,7 +165,7 @@ function validateForm(){
         function regExpAddress(){    
             const adressValid = contact.address;    
             const checkadress = document.getElementById('addressErrorMsg');    
-            if ( validateAddress.test(adressValid))
+            if ( validateCity.test(adressValid))
             {
             
                 return true
@@ -212,20 +214,26 @@ function validateForm(){
 
         formCheck();
 
+        const productAndContact = {
+            contact,
+            productsStorage,
+        }
 
-        const Data = {
+        const datacontact = {
             method: "POST",
-            body : JSON.stringify(contact),
+            body : JSON.stringify(productAndContact),
             headers: {
-                "Content-Type": "application/json",
+                "Accept": "application/json", 
+                "Content-Type": "application/json"
             }
         };
-
-        fetch("http://localhost:3000/api/products/order", Data)
+        
+        fetch("http://localhost:3000/api/products/order", datacontact)
         .then((response) => response.json())
         .then ((data) => 
         {
             localStorage.setItem("orderId", data.orderId);
+            console.log(data.orderId)
             if(formCheck()){
                 document.location.href =`confirmation.html?id=${data.orderId}`;
         }});
