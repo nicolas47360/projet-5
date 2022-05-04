@@ -256,7 +256,7 @@ order.addEventListener("click", (event) => {
     })     
         .then((response) => response.json())
         .then((data) =>{
-            console.log(data.contactId)
+            console.log(data)
             //document.location.href = `confirmation.html?id=${data.orderId}`  
         });   
     });
