@@ -1,11 +1,10 @@
 productsStorage = getProducts();
 
-//let products = [];
-//       for( product of productsStorage){
- //           products.push(product.id);            
-//      }
-//console.log(products)
-
+let productsId = [];
+        for( product of productsStorage){
+            productsId.push(product.id);            
+        } 
+console.log(productsId)
 // fonction permettant de sauvegarder les produits au format JSON dans le localstorage
 function saveProducts(product)
 {
@@ -130,127 +129,119 @@ let validateEmail = /^[a-zA-Z0-9.-_+]+[@]{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 let validateAddressCity = /^[A-Za-z-0-9éèê.,-\s]+$/;
 
 
-function validateForm(){
-    const order = document.getElementById('order');
-    order.addEventListener("click", (event) => {
-        event.preventDefault();        
-        const contact = {
-            fisrtName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            address: document.getElementById("address").value,
-            city: document.getElementById("city").value,
-            email:document.getElementById("email").value,
-        };
 
-        function regExpFirstName(){    
-            const ValidfisrtName = contact.fisrtName;    
-            const checkFirstName = document.getElementById('firstNameErrorMsg');    
-            if ( validateName.test(ValidfisrtName))
-            {
-            
-                return true
-            }
-            else{
-                checkFirstName.innerHTML = "le Prénom n'est pas valide"
-            }
-        };
-        
-        function regExpLastName(){    
-            const ValidlastName = contact.lastName;    
-            const checkLastName = document.getElementById('LastNameErrorMsg');    
-            if ( validateName.test(ValidlastName))
-            {
-            
-                return true
-            }
-            else{
-                checkLastName.innerHTML = "le nom n'est pas valide"
-            }
-        };
-        
-        function regExpAddress(){    
-            const adressValid = contact.address;    
-            const checkadress = document.getElementById('addressErrorMsg');    
-            if ( validateAddressCity.test(adressValid))
-            {
-            
-                return true
-            }
-            else{
-                checkadress.innerHTML = "l' adresse' n'est pas valide"
-            }
-        };
-        
-        function regExpCity(){    
-            const cityValid = contact.city;    
-            const checkcity = document.getElementById('cityErrorMsg');    
-            if ( validateAddressCity.test(cityValid))
-            {
-            
-                return true
-            }
-            else{
-                checkcity.innerHTML = "le format du nom de la ville n'est pas valide"
-            }
-        };
-        
-        function regExpEmail(){    
-            const emailValid = contact.email;    
-            const checkemail = document.getElementById('emailErrorMsg');    
-            if ( validateEmail.test(emailValid))
-            {
-            
-                return true
-            }
-            else{
-                checkemail.innerHTML = "l'adresse email n'est pas valide"
-            }
-        };
-        
-        function formCheck(){
-            if( regExpFirstName() && regExpLastName() && regExpAddress() && regExpCity() && regExpEmail())
-            {
-                return true;
-            }
-            else{
-                alert("Une erreue c'est produite, vos informations ne sont pas corectes,veuillez les vérifier ")
-            }
-                
-        };
+const order = document.getElementById('order');
+order.addEventListener("click", (event) => {
+    event.preventDefault();        
+    const contact = {
+        fisrtName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        email:document.getElementById("email").value,
+    };
 
-        let products = [];
-        for( product of productsStorage){
-            products.push(product.id);            
-        }          
+    console.log(contact)
+
+    function regExpFirstName(){    
+        const ValidfisrtName = contact.fisrtName;    
+        const checkFirstName = document.getElementById('firstNameErrorMsg');    
+        if ( validateName.test(ValidfisrtName))
+        {
         
-        const productAndContact = {
-            contact,
-            products,
+            return true
         }
-
-        const dataContact = {
-            method: "POST",
-            body : JSON.stringify(productAndContact),
-            headers: {
-                "Accept": "application/json", 
-                "Content-Type": "application/json",
-            }
-        };
-        
-        if(formCheck()){
-            fetch("http://localhost:3000/api/products/order", dataContact)
-            .then((response) => response.json())
-            .then ((data) => 
-            {           
-                
-                document.location.href =`confirmation.html?id=${data.orderId}`;
-            });
+        else{
+            checkFirstName.innerHTML = "le Prénom n'est pas valide"
         }
+    };
+    
+    function regExpLastName(){    
+        const ValidlastName = contact.lastName;    
+        const checkLastName = document.getElementById('LastNameErrorMsg');    
+        if ( validateName.test(ValidlastName))
+        {
         
+            return true
+        }
+        else{
+            checkLastName.innerHTML = "le nom n'est pas valide"
+        }
+    };
+    
+    function regExpAddress(){    
+        const adressValid = contact.address;    
+        const checkadress = document.getElementById('addressErrorMsg');    
+        if ( validateAddressCity.test(adressValid))
+        {
+        
+            return true
+        }
+        else{
+            checkadress.innerHTML = "l' adresse' n'est pas valide"
+        }
+    };
+    
+    function regExpCity(){    
+        const cityValid = contact.city;    
+        const checkcity = document.getElementById('cityErrorMsg');    
+        if ( validateAddressCity.test(cityValid))
+        {
+        
+            return true
+        }
+        else{
+            checkcity.innerHTML = "le format du nom de la ville n'est pas valide"
+        }
+    };
+    
+    function regExpEmail(){    
+        const emailValid = contact.email;    
+        const checkemail = document.getElementById('emailErrorMsg');    
+        if ( validateEmail.test(emailValid))
+        {
+        
+            return true
+        }
+        else{
+            checkemail.innerHTML = "l'adresse email n'est pas valide"
+        }
+    };
+    
+    function formCheck(){
+        if( regExpFirstName() && regExpLastName() && regExpAddress() && regExpCity() && regExpEmail())
+        {
+            return true;
+        }
+        else{
+            alert("Une erreue c'est produite, vos informations ne sont pas corectes,veuillez les vérifier ")
+        }
+            
+    };
+
+               
+    
+    const productAndContact = {
+        contact,
+        productsId,
+    }
+    
+    console.log(productAndContact)
+    const dataContact = {
+        method: "POST",
+        body : JSON.stringify(productAndContact),
+        headers: {
+            "Accept": "application/json", 
+            "Content-Type": "application/json",
+        }
+    };
+    
+    
+   
     });    
-};
 
-validateForm();
+
+
 
 
 
