@@ -1,3 +1,4 @@
+productsStorage = [];
 productsStorage = getProducts();
 
 // fonction permettant de sauvegarder les produits au format JSON dans le localstorage
@@ -217,36 +218,45 @@ order.addEventListener("click", (event) => {
     
     formCheck();
 
-    function saveContact(productAndContact)
+    function saveContact(contact)
     {
 
-        localStorage.setItem("products", JSON.stringify(productAndContact));
+        localStorage.setItem("contact", JSON.stringify(contact));
     }
 
-    let productsId = [];
-        for( product of productsStorage){
-            productsId.push(product.id);            
-        }
-    
-    const productAndContact = {
-        contact,
-        productsId,
-    };
-    
-    saveContact(productAndContact);
-    console.log(productAndContact);
+    function saveOrderId(orderId)
+    {
 
-    dataContact = {
-        method: "POST",
-        body : JSON.stringify(productAndContact),
-        headers: {
-            "Accept": "application/json", 
-            "Content-Type": "application/json",
+        localStorage.setItem("orderID", JSON.stringify(orderId));
+    }
+    
+
+    let orderId = [];
+        for( product of productsStorage){
+            orderId.push(product.id);            
         }
-    };
     
-    console.log(dataContact)
+    saveContact(contact);
+    saveOrderId(orderId)
+        
+    const contactAndOrder = {
+        contact,
+        orderId,
+    }; 
+   
+    console.log(contactAndOrder);
+
     
-    
-    
+    fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        body : JSON.stringify(contactAndOrder),
+        headers: {            
+            "Content-Type": "application/json",
+        },        
+    })     
+        .then((response) => response.json())
+        .then((data) =>{
+            console.log(data.contactId)
+            //document.location.href = `confirmation.html?id=${data.orderId}`  
+        });   
     });
