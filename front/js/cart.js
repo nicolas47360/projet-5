@@ -1,10 +1,5 @@
 productsStorage = getProducts();
 
-let productsId = [];
-        for( product of productsStorage){
-            productsId.push(product.id);            
-        } 
-console.log(productsId)
 // fonction permettant de sauvegarder les produits au format JSON dans le localstorage
 function saveProducts(product)
 {
@@ -141,6 +136,7 @@ order.addEventListener("click", (event) => {
         email:document.getElementById("email").value,
     };
 
+    
     console.log(contact)
 
     function regExpFirstName(){    
@@ -217,17 +213,30 @@ order.addEventListener("click", (event) => {
             alert("Une erreue c'est produite, vos informations ne sont pas corectes,veuillez les vérifier ")
         }
             
-    };
+    }; 
+    
+    formCheck();
 
-               
+    function saveContact(productAndContact)
+    {
+
+        localStorage.setItem("products", JSON.stringify(productAndContact));
+    }
+
+    let productsId = [];
+        for( product of productsStorage){
+            productsId.push(product.id);            
+        }
     
     const productAndContact = {
         contact,
         productsId,
-    }
+    };
     
-    console.log(productAndContact)
-    const dataContact = {
+    saveContact(productAndContact);
+    console.log(productAndContact);
+
+    dataContact = {
         method: "POST",
         body : JSON.stringify(productAndContact),
         headers: {
@@ -236,12 +245,8 @@ order.addEventListener("click", (event) => {
         }
     };
     
+    console.log(dataContact)
     
-   
-    });    
-
-
-
-
-
-
+    
+    
+    });

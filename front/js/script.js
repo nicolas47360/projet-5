@@ -3,7 +3,7 @@ const url = "http://localhost:3000/api/products"
 
 
 fetch(url)
-    .then((Response) => Response.json())
+    .then((response) => response.json())
     .then((data) => {
       // iteration de l'array contenant les produits avec l'instruction for of 
         for(let product of data){
