@@ -1,5 +1,10 @@
-let products = [];
 productsStorage = getProducts();
+
+//let products = [];
+//       for( product of productsStorage){
+ //           products.push(product.id);            
+//      }
+//console.log(products)
 
 // fonction permettant de sauvegarder les produits au format JSON dans le localstorage
 function saveProducts(product)
@@ -108,6 +113,7 @@ function showProducts(){
         </article>
         `
         }
+
 }
     
 getTotalPrice();
@@ -121,7 +127,7 @@ replaceQuantity();
 
 let validateName = /^[A-Za-z.-]{2,40}$/;
 let validateEmail = /^[a-zA-Z0-9.-_+]+[@]{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
-let validateAddressCity = /^[A-Za-z-0-9éèê-.,\s]+$/;
+let validateAddressCity = /^[A-Za-z-0-9éèê.,-\s]+$/;
 
 
 function validateForm(){
@@ -212,37 +218,39 @@ function validateForm(){
                 
         };
 
-        formCheck();
-
+        let products = [];
+        for( product of productsStorage){
+            products.push(product.id);            
+        }          
+        
         const productAndContact = {
             contact,
-            productsStorage,
+            products,
         }
 
-        const datacontact = {
+        const dataContact = {
             method: "POST",
             body : JSON.stringify(productAndContact),
             headers: {
                 "Accept": "application/json", 
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
         };
         
-        fetch("http://localhost:3000/api/products/order", datacontact)
-        .then((response) => response.json())
-        .then ((data) => 
-        {
-            localStorage.setItem("orderId", data.orderId);
-            console.log(data.orderId)
-            if(formCheck()){
+        if(formCheck()){
+            fetch("http://localhost:3000/api/products/order", dataContact)
+            .then((response) => response.json())
+            .then ((data) => 
+            {           
+                
                 document.location.href =`confirmation.html?id=${data.orderId}`;
-        }});
+            });
+        }
+        
     });    
 };
 
 validateForm();
-
-
 
 
 
