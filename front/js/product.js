@@ -22,7 +22,7 @@ class Product {
 
 //récuperation de la data de l'api pour une id de produit avec injection dans le DOM
 fetch  (url + "/" + urlData)
-    .then((Response) => Response.json())
+    .then((response) => response.json())
     .then ((data) => {
         const image = document.createElement("div");               
         document.querySelector(".item__img").appendChild(image);
@@ -67,17 +67,17 @@ addToCart.addEventListener("click", (event) => {
     function addProductsInStorage(selectProducts)
     {
         productsSaveInStorage = []; // on instancie un tableau vide
-        if (localStorage.getItem("products")) 
+        if (localStorage.getItem("product")) 
         { // si il y a un produit dans le local storage
-            productsSaveInStorage = JSON.parse(localStorage.getItem("products"));
+            productsSaveInStorage = JSON.parse(localStorage.getItem("product"));
             if(checkDataStorage(productsSaveInStorage)) 
             { // on passe le tableau dans une fonction qui va boucler sur le tableau de products et += la quantité si il trouve un produit déjà existant
-                localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+                localStorage.setItem("product", JSON.stringify(productsSaveInStorage));
                 addmessage();
             } 
             else { // si ce produit n'existe pas nous le pushons à la fin du tableau.
                 productsSaveInStorage.push(selectProducts);
-                localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+                localStorage.setItem("product", JSON.stringify(productsSaveInStorage));
                 addmessage();
             }
         } else { 
@@ -85,7 +85,7 @@ addToCart.addEventListener("click", (event) => {
             // travailler avec un tableau va nous permettre ensuite de pouvoir boucler dessus 
             // nous somme à présent sur un Array as JSON https://www.w3schools.com/js/js_json_parse.asp
             productsSaveInStorage.push(selectProducts);
-            localStorage.setItem("products", JSON.stringify(productsSaveInStorage));
+            localStorage.setItem("product", JSON.stringify(productsSaveInStorage));
             addmessage();
         }
     }

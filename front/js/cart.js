@@ -1,19 +1,16 @@
-
-
-productsStorage = [];
 productsStorage = getProducts();
 
 // fonction permettant de sauvegarder les produits au format JSON dans le localstorage
 function saveProducts(product)
 {
 
-    localStorage.setItem("products", JSON.stringify(product));
+    localStorage.setItem("product", JSON.stringify(product));
 }
 
 // fonction permettant d'obtenir les produits contenus dans le localstorage
 function getProducts()
 {    
-    return JSON.parse(localStorage.getItem("products"));
+    return JSON.parse(localStorage.getItem("product"));
 }
 
 
@@ -130,13 +127,15 @@ let validateAddressCity = /^[A-Za-z-0-9éèê.,-\s]+$/;
 
 const order = document.getElementById('order');
 order.addEventListener("click", (event) => {
-    event.preventDefault();        
+    event.preventDefault();
+   
+    
     const contact = {
         fisrtName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value,
         address: document.getElementById("address").value,
         city: document.getElementById("city").value,
-        email:document.getElementById("email").value,
+        email:document.getElementById("email").value,        
     };
 
     
@@ -220,45 +219,41 @@ order.addEventListener("click", (event) => {
     
     formCheck();
 
-    function saveContact(contact)
+    function saveContactAndOrder(productOrder)
     {
-
-        localStorage.setItem("contact", JSON.stringify(contact));
-    }
-
-    function saveOrderId(orderId)
-    {
-
-        localStorage.setItem("orderID", JSON.stringify(orderId));
+        localStorage.setItem("productOrder", JSON.stringify(productOrder))
+    };
+    
+    let products = [];
+    
+    for( product of productsStorage){
+        products.push(product.id);            
     }
     
-
-    let orderId = [];
-        for( product of productsStorage){
-            orderId.push(product.id);            
-        }
     
-    saveContact(contact);
-    saveOrderId(orderId)
+    console.log(products)   
         
-    const contactAndOrder = {
+    const productOrder = {
         contact,
-        orderId,
-    }; 
+        products: products,
+    }
    
-    console.log(contactAndOrder);
-
+    console.log(productOrder);
+    saveContactAndOrder(productOrder);
     
-    fetch("http://localhost:3000/api/products/order", {
+    const server =fetch("http://localhost:3000/api/products/order", {
         method: "POST",
-        body : JSON.stringify(contactAndOrder),
+        body : JSON.stringify(productOrder),
         headers: {            
             "Content-Type": "application/json",
-        },        
+        }, 
+               
     })     
         .then((response) => response.json())
         .then((data) =>{
             console.log(data)
             //document.location.href = `confirmation.html?id=${data.orderId}`  
-        });   
+        }); 
+    console.log(server)
+
     });
