@@ -13,7 +13,6 @@ function getProducts()
     return JSON.parse(localStorage.getItem("product"));
 }
 
-
 // fonction permettant de supprimer un produit lors du click sur le bouton supprimer
 function removeProducts ()
 {   
@@ -120,27 +119,22 @@ replaceQuantity();
 //----------------------------FORMULAIRE----------------------------------------------------------
 
 let validateName = /^[A-Za-z.-]{2,40}$/;
-let validateEmail = /^[a-zA-Z0-9.-_+]+[@]{1}[a-zA_z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+let validateEmail = /^[a-zA-Z0-9.-_+]+[@]{1}[a-zA-z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 let validateAddressCity = /^[A-Za-z-0-9éèê.,-\s]+$/;
 
 
-
 const order = document.getElementById('order');
+// évenement permettant l' envoi des produits, du formualire contact vers l'api au click du boutton avec gestion des erreurs de saisie du formulaire
 order.addEventListener("click", (event) => {
-    event.preventDefault();
-   
-    
+    event.preventDefault();    
     const contact = {
-        fisrtName: document.getElementById("firstName").value,
+        firstName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value,
         address: document.getElementById("address").value,
         city: document.getElementById("city").value,
         email:document.getElementById("email").value,        
-    };
-
-    
-    console.log(contact)
-
+    };    
+    //fonction permettant de gérer les erreurs de saisie du champ firstname 
     function regExpFirstName(){    
         const ValidfisrtName = contact.fisrtName;    
         const checkFirstName = document.getElementById('firstNameErrorMsg');    
@@ -153,7 +147,7 @@ order.addEventListener("click", (event) => {
             checkFirstName.innerHTML = "le Prénom n'est pas valide"
         }
     };
-    
+    //fonction permettant de gérer les erreurs de saisie du champ lastname 
     function regExpLastName(){    
         const ValidlastName = contact.lastName;    
         const checkLastName = document.getElementById('LastNameErrorMsg');    
@@ -166,7 +160,7 @@ order.addEventListener("click", (event) => {
             checkLastName.innerHTML = "le nom n'est pas valide"
         }
     };
-    
+    //fonction permettant de gérer les erreurs de saisie du champ address
     function regExpAddress(){    
         const adressValid = contact.address;    
         const checkadress = document.getElementById('addressErrorMsg');    
@@ -179,7 +173,7 @@ order.addEventListener("click", (event) => {
             checkadress.innerHTML = "l' adresse' n'est pas valide"
         }
     };
-    
+    //fonction permettant de gérer les erreurs de saisie du champ city
     function regExpCity(){    
         const cityValid = contact.city;    
         const checkcity = document.getElementById('cityErrorMsg');    
@@ -192,7 +186,7 @@ order.addEventListener("click", (event) => {
             checkcity.innerHTML = "le format du nom de la ville n'est pas valide"
         }
     };
-    
+    //fonction permettant de gérer les erreurs de saisie du champ mail
     function regExpEmail(){    
         const emailValid = contact.email;    
         const checkemail = document.getElementById('emailErrorMsg');    
@@ -205,7 +199,7 @@ order.addEventListener("click", (event) => {
             checkemail.innerHTML = "l'adresse email n'est pas valide"
         }
     };
-    
+    //fonction permettant la validation des champs du formulaire avec un message en cas d'erreur de saisie
     function formCheck(){
         if( regExpFirstName() && regExpLastName() && regExpAddress() && regExpCity() && regExpEmail())
         {
@@ -215,45 +209,49 @@ order.addEventListener("click", (event) => {
             alert("Une erreue c'est produite, vos informations ne sont pas corectes,veuillez les vérifier ")
         }
             
-    }; 
-    
-    formCheck();
+    };    
 
+    //fonction permettant de sauvegarder dans le localstorage le contact et le id du produit
     function saveContactAndOrder(productOrder)
     {
         localStorage.setItem("productOrder", JSON.stringify(productOrder))
     };
     
-    let products = [];
-    
-    for( product of productsStorage){
-        products.push(product.id);            
-    }
-    
-    
-    console.log(products)   
-        
+    //fonction permettant de récupérer l' id des produits contenu dans le localstorage
+    function productId(){
+        let products = [];    
+        for( product of productsStorage){
+            products.push(product.id);            
+        }
+        return products      
+    }        
     const productOrder = {
         contact,
-        products: products,
-    }
-   
-    console.log(productOrder);
+        products: productId(),
+    }   
     saveContactAndOrder(productOrder);
     
-    const server =fetch("http://localhost:3000/api/products/order", {
-        method: "POST",
-        body : JSON.stringify(productOrder),
-        headers: {            
-            "Content-Type": "application/json",
-        }, 
-               
-    })     
-        .then((response) => response.json())
-        .then((data) =>{
-            console.log(data)
-            //document.location.href = `confirmation.html?id=${data.orderId}`  
-        }); 
-    console.log(server)
+    //fonction permettant d'envoyer les informations vers l'api si le formulaire et bien remplie
+    function serverSend(){
+        if(formCheck()){
+            fetch("http://localhost:3000/api/products/order", {
+                method: "POST",
+                body : JSON.stringify(productOrder),
+                headers: {            
+                    "Content-Type": "application/json",
+                }, 
+                       
+            })     
+                .then((response) => response.json())
+                .then((data) =>{
+                    alert(`vous allez être rediriger vers la page de confiramtion`)
+                    localStorage.clear();            
+                    document.location.href = "confirmation.html"  + "?orderId=" + data.orderId; 
+                });    
+        }
+    }
+    serverSend()
 
     });
+
+    
