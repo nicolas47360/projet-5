@@ -29,7 +29,7 @@ function removeProducts ()
     }   
 }
 
-//fonction permettant de modifier la quntité d'un produit lors du click
+//fonction permettant de modifier la quantité d'un produit lors du click
 function replaceQuantity()
 {
    let productsQuantity = document.getElementsByClassName('itemQuantity');
@@ -37,20 +37,15 @@ function replaceQuantity()
        {            
         productsQuantity[q].addEventListener("click", (event) =>{
             event.preventDefault();
-            //trouve le produit en fonction de son id et de sa couleur                                   
-            newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                                   
-            if (newproductsStorage.quantity > 0)
-            {   
-                let newQuantity = parseInt(productsQuantity[q].value, 10);
-                newproductsStorage.quantity = newQuantity;
-                productsStorage[q] = newproductsStorage;                                    
-                alert("le produit a été modifié");
-                saveProducts(productsStorage);
-                window.location.href = "cart.html";
-            }
-            else{
-                removeProducts();
-            }           
+            console.log(productsQuantity.length);                      
+            newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
+            let newQuantity = parseInt(productsQuantity[q].value, 10);
+            newproductsStorage.quantity = newQuantity;
+            productsStorage[q] = newproductsStorage;
+            console.log(newproductsStorage)                                                   
+            alert("le produit a été modifié");
+            saveProducts(productsStorage);
+            window.location.href = "cart.html";   
         });      
     }    
 }
@@ -114,7 +109,6 @@ getQuantityProduct();
 showProducts();
 removeProducts();
 replaceQuantity();
-
 
 //----------------------------FORMULAIRE----------------------------------------------------------
 

@@ -5,7 +5,7 @@ const params = new URLSearchParams(window.location.search);
 let urlData  = params.get('id');
 
 var imageUrl = ""
-var quantityproduct = ""
+
 
 //instancition d'u  objet prennant plusieurs paramétres
 class Product {
@@ -98,27 +98,29 @@ function checkDataStorage(productsSaveInStorage) {
     }
 }
 
-//fonction renvoyant un message lors de l'ajout d'un produit au panier au panier
+//fonction renvoyant un message lors de l'ajout d'un produit au panier
 function addmessage(){
     alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${selectProducts.title} de la couleur ${selectProducts.color}`)
 }
 
-function quantityproductbasket(){
-    let productsSave = JSON.parse(localStorage.getItem("product"));
-    console.log(productsSave)
-    productsq = []
-    for (let product of productsSave){
-        productq = product.quantity;        
-        productsq.push(productq)
-    }
-    return productsq
-}
+// function quantityproductbasket(){
+//     let productsSave = JSON.parse(localStorage.getItem("product"));
+//     console.log(productsSave)
+//     productsq = []
+//     for (let product of productsSave){
+//         productq = product.quantity;        
+//         productsq.push(productq)
+//     }
+//     return productsq
+// }
 
-function showQuantityBasket(){
-    const ba = document.createElement("span");
-    const basket = document.querySelector("li").appendChild(ba);
-    const q = basket.insertBefore(ba, basket)
-    q.innerHTML = quantityproductbasket();
-}
+// function showQuantityBasket(){
+//     const basket = document.createElement("li");
+    
+//     basket.innerHTML =`<span>${quantityproductbasket()}<span>`;
+//     document.querySelector("ul").appendChild(basket);
+//     console.log(basket)    
+// }
+    
 
-showQuantityBasket();
+// showQuantityBasket();
