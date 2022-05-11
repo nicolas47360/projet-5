@@ -41,8 +41,7 @@ function replaceQuantity()
             newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
-            productsStorage[q] = newproductsStorage;
-            console.log(newproductsStorage)                                                   
+            productsStorage[q] = newproductsStorage;                                                              
             alert("le produit a été modifié");
             saveProducts(productsStorage);
             window.location.href = "cart.html";   
@@ -245,7 +244,4 @@ order.addEventListener("click", (event) => {
         }
     }
     serverSend()
-
-    });
-
-    
+    });    

@@ -62,8 +62,7 @@ addToCart.addEventListener("click", (event) => {
 });
 
 // fonction permettant d'ajouter un produit au local storage
-function addProductsInStorage(selectProducts)
-{
+function addProductsInStorage(selectProducts){
         // on instancie un tableau vide
     productsSaveInStorage = [];
     if (localStorage.getItem("product")) 
@@ -113,12 +112,13 @@ function addmessage(){
 //     }
 //     return productsq
 // }
-
+// var basketshow =""
 // function showQuantityBasket(){
 //     const basket = document.createElement("li");
-    
-//     basket.innerHTML =`<span>${quantityproductbasket()}<span>`;
 //     document.querySelector("ul").appendChild(basket);
+    
+//     basketshow.innerHTML =`<span>${quantityproductbasket()}<span>`;
+    
 //     console.log(basket)    
 // }
     
