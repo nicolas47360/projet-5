@@ -1,11 +1,7 @@
 const url = "http://localhost:3000/api/products"
-
 const params = new URLSearchParams(window.location.search);
-
 let urlData  = params.get('id');
-
 var imageUrl = ""
-
 
 //instancition d'u  objet prennant plusieurs paramétres
 class Product {
@@ -101,26 +97,3 @@ function checkDataStorage(productsSaveInStorage) {
 function addmessage(){
     alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${selectProducts.title} de la couleur ${selectProducts.color}`)
 }
-
-// function quantityproductbasket(){
-//     let productsSave = JSON.parse(localStorage.getItem("product"));
-//     console.log(productsSave)
-//     productsq = []
-//     for (let product of productsSave){
-//         productq = product.quantity;        
-//         productsq.push(productq)
-//     }
-//     return productsq
-// }
-// var basketshow =""
-// function showQuantityBasket(){
-//     const basket = document.createElement("li");
-//     document.querySelector("ul").appendChild(basket);
-    
-//     basketshow.innerHTML =`<span>${quantityproductbasket()}<span>`;
-    
-//     console.log(basket)    
-// }
-    
-
-// showQuantityBasket();

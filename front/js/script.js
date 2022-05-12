@@ -1,7 +1,6 @@
 // url de l'api
 const url = "http://localhost:3000/api/products"
 
-
 fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -18,6 +17,4 @@ fetch(url)
             </article>
           </a>           `           
         };         
-    }           
-    
-    )
+    })   
