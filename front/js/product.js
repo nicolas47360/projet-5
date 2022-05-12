@@ -40,7 +40,7 @@ fetch  (url + "/" + urlData)
 const addToCart = document.getElementById('addToCart');
 const quantity = document.getElementById('quantity');
 
-// évenement permettant l'ajout des produits au click du boutton avec gestion ds quantités et des couleurs
+// évenement permettant l'ajout des produits au click du boutton avec gestion des quantités et des couleurs
 addToCart.addEventListener("click", (event) => {
     event.preventDefault();
     if (quantity.value <= 0 || quantity.value > 100)
@@ -82,7 +82,7 @@ function addProductsInStorage(selectProducts){
     }
 }
 
-// fonction permettant de vérifier si un produit de la même id et couleur est présent de le localstorage 
+// fonction permettant de vérifier si un produit de la même id et couleur est présent de le local storage 
 function checkDataStorage(productsSaveInStorage) {
     for(item of productsSaveInStorage)
         {

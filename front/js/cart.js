@@ -1,19 +1,19 @@
 productsStorage = getProducts();
 
-// fonction permettant de sauvegarder les produits au format JSON dans le localstorage
+// fonction permettant de sauvegarder les produits au format JSON dans le local storage
 function saveProducts(product)
 {
 
     localStorage.setItem("product", JSON.stringify(product));
 }
 
-// fonction permettant d'obtenir les produits contenus dans le localstorage
+// fonction permettant d'obtenir les produits contenus dans le local storage
 function getProducts()
 {    
     return JSON.parse(localStorage.getItem("product"));
 }
 
-// fonction permettant de supprimer un produit lors du click sur le bouton supprimer
+// fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
 function removeProducts ()
 {   
     deleteProducts = document.getElementsByClassName('deleteItem');
@@ -29,7 +29,7 @@ function removeProducts ()
     }   
 }
 
-//fonction permettant de modifier la quantité d'un produit lors du click
+//fonction permettant de modifier la quantité d'un produit lors du click et modification de la quantité dans le local storage
 function replaceQuantity()
 {
    let productsQuantity = document.getElementsByClassName('itemQuantity');
@@ -49,7 +49,7 @@ function replaceQuantity()
     }    
 }
 
-//fonction permettant d'obtenir et d'afficher la quantité totale de produit dans le localstorage
+//fonction permettant d'obtenir et d'afficher la quantité totale des produit contenus dans le local storage
 function getQuantityProduct()
 {        
     let totalQuantity = 0;
@@ -61,7 +61,7 @@ function getQuantityProduct()
     }
 }
 
-//fonction permettant de calculer et d'afficher le prix total de l'ensemble des produits contenu dans le localstorage
+//fonction permettant de calculer et d'afficher le prix total de l'ensemble des produits contenus dans le local storage
 function getTotalPrice(){       
     let totalPrice = 0;
     for (let product of productsStorage)
@@ -72,7 +72,7 @@ function getTotalPrice(){
     }        
 }
 
-//fonction permettant l' affichage des données contenues dans le localstorage
+//fonction permettant l' affichage des données contenues dans le local storage
 function showProducts(){
     for (let product of productsStorage){   
         document.getElementById("cart__items");    
@@ -178,7 +178,7 @@ order.addEventListener("click", (event) => {
             checkcity.innerHTML = "le format du nom de la ville n'est pas valide"
         }
     };
-    //fonction permettant de gérer les erreurs de saisie du champ mail
+    //fonction permettant de gérer les erreurs de saisie du champ email
     function regExpEmail(){    
         const emailValid = contact.email;    
         const checkemail = document.getElementById('emailErrorMsg');    
@@ -209,7 +209,7 @@ order.addEventListener("click", (event) => {
         localStorage.setItem("productOrder", JSON.stringify(productOrder))
     };
     
-    //fonction permettant de récupérer l' id des produits contenu dans le localstorage
+    //fonction permettant de récupérer l' id des produits contenus dans le local storage
     function productId(){
         let products = [];    
         for( product of productsStorage){
@@ -223,7 +223,7 @@ order.addEventListener("click", (event) => {
     }   
     saveContactAndOrder(productOrder);
     
-    //fonction permettant d'envoyer les informations vers l'api si le formulaire et bien remplie
+    //fonction permettant d'envoyer les informations vers l'api si le formulaire est bien remplie
     function serverSend(){
         if(formCheck()){
             fetch("http://localhost:3000/api/products/order", {
