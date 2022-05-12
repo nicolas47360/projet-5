@@ -115,7 +115,6 @@ let validateName = /^[A-Za-z.-]{2,40}$/;
 let validateEmail = /^[a-zA-Z0-9.-_+]+[@]{1}[a-zA-z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 let validateAddressCity = /^[A-Za-z-0-9éèê.,-\s]+$/;
 
-
 const order = document.getElementById('order');
 // évenement permettant l' envoi des produits, du formualire contact vers l'api au click du boutton avec gestion des erreurs de saisie du formulaire
 order.addEventListener("click", (event) => {
