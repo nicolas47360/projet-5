@@ -1,33 +1,5 @@
 const url = "http://localhost:3000/api/products"
-
-productsStorage = getProducts();
-
-
-
-function prodId(){
-    productsid = []
-    for( prod of productsStorage){
-        console.log(prod.id)
-        productsid.push(prod.id)
-        
-    }
-}
-prodId();
-
-
-prodIdApi= []
-for(id of productsid){    
-    fetch(url + "/" + id)
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data)
-        prodIdApi.push(data)
-    });
-}
-console.log(prodIdApi.price)
-
-
-
+productsStorage = getProducts()
 
 // fonction permettant de sauvegarder les produits au format JSON dans le local storage
 function saveProducts(product)
@@ -42,9 +14,7 @@ function getProducts()
     return JSON.parse(localStorage.getItem("product"));
 }
 
-
-
-// fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
+//fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
 function removeProducts ()
 {   
     deleteProducts = document.getElementsByClassName('deleteItem');
@@ -60,22 +30,23 @@ function removeProducts ()
     }   
 }
 
+
 //fonction permettant de modifier la quantité d'un produit lors du click et modification de la quantité dans le local storage
 function replaceQuantity()
 {
    let productsQuantity = document.getElementsByClassName('itemQuantity');
    for ( let q = 0; q < productsQuantity.length; q++)
        {            
-        productsQuantity[q].addEventListener("change", (event) =>{
+        productsQuantity[q].addEventListener("click", (event) =>{
             event.preventDefault();
-            console.log(productsQuantity.length);                      
+            console.log(productsQuantity[q]);                      
             newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
             productsStorage[q] = newproductsStorage;                                                              
             alert("la quantité a été modifié");
             saveProducts(productsStorage);
-            window.location.reload();   
+            //window.location.reload();   
         });      
     }    
 }
@@ -85,8 +56,7 @@ function getQuantityProduct()
 {        
     let totalQuantity = 0;     
     for (let product of productsStorage)
-    {
-        
+        {        
         totalQuantity += product.quantity;         
         const showQuantities = document.getElementById('totalQuantity');
         showQuantities.innerHTML = totalQuantity;             
@@ -97,28 +67,33 @@ function getQuantityProduct()
 function getTotalPrice(){       
     let totalPrice = 0;
     for (let product of productsStorage)
-    {
-        totalPrice += prod.price * product.quantity;
-        const showPrice = document.getElementById('totalPrice');
-        showPrice.innerHTML = totalPrice;              
+    {   fetch(url + "/" + product.id)
+        .then((response)=> response.json())
+        .then((data) => {            
+            totalPrice += data.price * product.quantity;
+            const showPrice = document.getElementById('totalPrice');
+            showPrice.innerHTML = totalPrice;
+        });                 
     }        
 }
 
 //fonction permettant l' affichage des données contenues dans le local storage
 function showProducts(){
     for (let product of productsStorage){
-          
+        fetch(url + "/" + product.id)
+        .then((response)=> response.json())
+        .then((data) => {          
         document.getElementById("cart__items");    
         cart__items.innerHTML +=`
         <article class="cart__item" data-id=${product.id} data-color="${product.color}">
         <div class="cart__item__img">
-        <img src="${product.imageUrl}" alt="${product.altTxt}">
+        <img src="${data.imageUrl}" alt="${data.altTxt}">
         </div>
         <div class="cart__item__content">
         <div class="cart__item__content__description">
-            <h2>${product.title}</h2>
+            <h2>${data.name}</h2>
             <p>${product.color}</p>
-            <p>${product.price + "€"}</p>
+            <p>${data.price + "€"}</p>
         </div>
         <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
@@ -132,8 +107,8 @@ function showProducts(){
         </div>
         </article>
         `
-        }
-
+        });  
+    }
 }
     
 getTotalPrice();

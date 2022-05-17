@@ -5,15 +5,10 @@ var imageUrl = ""
 
 //instancition d'u  objet prennant plusieurs paramétres
 class Product {
-    constructor(id, color, title, price, description, quantity, imageUrl, texte) {
+    constructor(id, color, quantity) {
         this.id = id;
-        this.color = color;
-        this.title = title;
-        this.price = parseInt(price, 10);
-        this.description = description;
-        this.quantity = parseInt(quantity, 10);
-        this.imageUrl = imageUrl;
-        this.alttexte = texte;        
+        this.color = color;       
+        this.quantity = parseInt(quantity, 10);            
     }
 }
 
@@ -52,7 +47,7 @@ addToCart.addEventListener("click", (event) => {
         alert("Veuillez séléctionnée une couleur")
     } 
     else { //si tout est ok on instancie la classe Product
-        selectProducts = new Product(urlData, colors.value, title.textContent, price.textContent, description.textContent, quantity.value, imageUrl.src, imageUrl.alt);
+        selectProducts = new Product(urlData, colors.value, quantity.value);
         addProductsInStorage(selectProducts);
     }
 });
@@ -95,5 +90,9 @@ function checkDataStorage(productsSaveInStorage) {
 
 //fonction renvoyant un message lors de l'ajout d'un produit au panier
 function addmessage(){
-    alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${selectProducts.title} de la couleur ${selectProducts.color}`)
+    fetch  (url + "/" + urlData)
+    .then((response) => response.json())
+    .then ((data) => {        
+    alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${data.name}`)
+});
 }
