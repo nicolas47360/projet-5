@@ -1,4 +1,33 @@
+const url = "http://localhost:3000/api/products"
+
 productsStorage = getProducts();
+
+
+
+function prodId(){
+    productsid = []
+    for( prod of productsStorage){
+        console.log(prod.id)
+        productsid.push(prod.id)
+        
+    }
+}
+prodId();
+
+
+prodIdApi= []
+for(id of productsid){    
+    fetch(url + "/" + id)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data)
+        prodIdApi.push(data)
+    });
+}
+console.log(prodIdApi.price)
+
+
+
 
 // fonction permettant de sauvegarder les produits au format JSON dans le local storage
 function saveProducts(product)
@@ -13,6 +42,8 @@ function getProducts()
     return JSON.parse(localStorage.getItem("product"));
 }
 
+
+
 // fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
 function removeProducts ()
 {   
@@ -24,7 +55,7 @@ function removeProducts ()
             productsStorage.splice(i, 1);                     
             saveProducts(productsStorage);
             alert("le produit a bien été supprimé");
-            window.location.href = "cart.html";
+            window.location.reload();
         });      
     }   
 }
@@ -35,16 +66,16 @@ function replaceQuantity()
    let productsQuantity = document.getElementsByClassName('itemQuantity');
    for ( let q = 0; q < productsQuantity.length; q++)
        {            
-        productsQuantity[q].addEventListener("click", (event) =>{
+        productsQuantity[q].addEventListener("change", (event) =>{
             event.preventDefault();
             console.log(productsQuantity.length);                      
             newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
             productsStorage[q] = newproductsStorage;                                                              
-            alert("le produit a été modifié");
+            alert("la quantité a été modifié");
             saveProducts(productsStorage);
-            window.location.href = "cart.html";   
+            window.location.reload();   
         });      
     }    
 }
@@ -52,9 +83,10 @@ function replaceQuantity()
 //fonction permettant d'obtenir et d'afficher la quantité totale des produit contenus dans le local storage
 function getQuantityProduct()
 {        
-    let totalQuantity = 0;
+    let totalQuantity = 0;     
     for (let product of productsStorage)
     {
+        
         totalQuantity += product.quantity;         
         const showQuantities = document.getElementById('totalQuantity');
         showQuantities.innerHTML = totalQuantity;             
@@ -66,7 +98,7 @@ function getTotalPrice(){
     let totalPrice = 0;
     for (let product of productsStorage)
     {
-        totalPrice += product.price * product.quantity;
+        totalPrice += prod.price * product.quantity;
         const showPrice = document.getElementById('totalPrice');
         showPrice.innerHTML = totalPrice;              
     }        
@@ -74,7 +106,8 @@ function getTotalPrice(){
 
 //fonction permettant l' affichage des données contenues dans le local storage
 function showProducts(){
-    for (let product of productsStorage){   
+    for (let product of productsStorage){
+          
         document.getElementById("cart__items");    
         cart__items.innerHTML +=`
         <article class="cart__item" data-id=${product.id} data-color="${product.color}">
