@@ -1,6 +1,7 @@
 const url = "http://localhost:3000/api/products"
 productsStorage = getProducts()
 
+console.log(productsStorage)
 // fonction permettant de sauvegarder les produits au format JSON dans le local storage
 function saveProducts(product)
 {
@@ -15,9 +16,9 @@ function getProducts()
 }
 
 //fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
-function removeProducts ()
+function removeProducts()
 {   
-    deleteProducts = document.getElementsByClassName('deleteItem');
+    deleteProducts = document.getElementsByClassName("deleteItem");
     for ( let i = 0; i < deleteProducts.length; i++)
     {
         deleteProducts[i].addEventListener("click", (event) =>{
@@ -36,17 +37,16 @@ function replaceQuantity()
 {
    let productsQuantity = document.getElementsByClassName('itemQuantity');
    for ( let q = 0; q < productsQuantity.length; q++)
-       {            
-        productsQuantity[q].addEventListener("click", (event) =>{
-            event.preventDefault();
-            console.log(productsQuantity[q]);                      
+       {           
+        productsQuantity[q].addEventListener("change", (event) =>{
+            event.preventDefault();                                  
             newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
             productsStorage[q] = newproductsStorage;                                                              
             alert("la quantité a été modifié");
             saveProducts(productsStorage);
-            //window.location.reload();   
+            window.location.reload();   
         });      
     }    
 }
@@ -110,12 +110,12 @@ function showProducts(){
         });  
     }
 }
-    
+removeProducts();
+replaceQuantity();   
 getTotalPrice();
 getQuantityProduct();
 showProducts();
-removeProducts();
-replaceQuantity();
+
 
 //----------------------------FORMULAIRE----------------------------------------------------------
 
