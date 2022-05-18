@@ -93,6 +93,6 @@ function addmessage(){
     fetch  (url + "/" + urlData)
     .then((response) => response.json())
     .then ((data) => {        
-    alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${data.name}`)
+    alert(` Vous venez d'ajouter au panier ${selectProducts.quantity} camapé ${data.name} de la couleur ${selectProducts.color}`)
 });
 }

@@ -15,11 +15,9 @@ for (product of productsStorage){
     .then((response) => response.json())
     .then((data) => {        
         console.log(data)
+        console.log(data.price)
     })
 }
-
-
-
 
 // fonction permettant de sauvegarder les produits au format JSON dans le local storage
 function saveProducts(product)
@@ -57,7 +55,7 @@ function removeProducts ()
             event.preventDefault();            
             productsStorage.splice(i, 1);                     
             saveProducts(productsStorage);
-            alert("le produit a bien été supprimé");
+            alert("le produit va être supprimé");
             window.location.reload();
         });      
     }   
@@ -76,9 +74,10 @@ function replaceQuantity()
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
             productsStorage[q] = newproductsStorage;
-            saveProducts(productsStorage);                                                              
-            alert("la quantité a été modifié");            
-            window.location.reload();   
+            saveProducts(productsStorage);
+            window.location.reload();                                                               
+            alert("la quantité va être modifié");            
+              
         });      
     }    
 }
@@ -96,20 +95,22 @@ function getQuantityProduct()
 }
 
 //fonction permettant l' affichage des données contenues dans le local storage
-function showProducts(){
+function showProducts(){    
     for (let product of productsStorage){ 
-                       
-        document.getElementById("cart__items");    
-        cart__items.innerHTML =`
+        fetch(url + product.id)
+        .then((response) => response.json())
+        .then((data) => {                                
+        const cart= document.getElementById("cart__items");    
+        cart__items.innerHTML +=`
         <article class="cart__item" data-id=${product.id} data-color="${product.color}">
         <div class="cart__item__img">
-        <img src="${product.imageUrl}" alt="${product.altTxt}">
+        <img src="${data.imageUrl}" alt="${data.altTxt}">
         </div>
         <div class="cart__item__content">
         <div class="cart__item__content__description">
-            <h2>${product.name}</h2>
+            <h2>${data.name}</h2>
             <p>${product.color}</p>
-            <p>${product.price + "€"}</p>
+            <p>${data.price + "€"}</p>
         </div>
         <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
@@ -123,17 +124,16 @@ function showProducts(){
         </div>
         </article>
         `
-        }
-
+        getTotalPrice();
+        getQuantityProduct();
+        removeProducts();
+        replaceQuantity();
+        });
+    }
 }
 
-
-
-getTotalPrice();
-getQuantityProduct();
 showProducts();
-removeProducts();
-replaceQuantity();
+
 
 //----------------------------FORMULAIRE----------------------------------------------------------
 
