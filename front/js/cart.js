@@ -18,15 +18,14 @@ function getProducts()
 //fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
 function removeProducts()
 {   
-    deleteProducts = document.getElementsByClassName("deleteItem");
-    for ( let i = 0; i < deleteProducts.length; i++)
-    {
+    deleteProducts = document.getElementsByClassName("deleteItem");    
+    for ( i = 0; i < deleteProducts.length; i++){       
         deleteProducts[i].addEventListener("click", (event) =>{
-            event.preventDefault();            
+            event.preventDefault()                       
             productsStorage.splice(i, 1);                     
             saveProducts(productsStorage);
             alert("le produit a bien été supprimé");
-            window.location.reload();
+            window.location.reload();       
         });      
     }   
 }
@@ -35,18 +34,17 @@ function removeProducts()
 //fonction permettant de modifier la quantité d'un produit lors du click et modification de la quantité dans le local storage
 function replaceQuantity()
 {
-   let productsQuantity = document.getElementsByClassName('itemQuantity');
-   for ( let q = 0; q < productsQuantity.length; q++)
-       {           
+   let productsQuantity = document.getElementsByClassName('itemQuantity');   
+   for ( let q = 0; q < productsQuantity.length; q++){
         productsQuantity[q].addEventListener("change", (event) =>{
             event.preventDefault();                                  
             newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
-            productsStorage[q] = newproductsStorage;                                                              
-            alert("la quantité a été modifié");
-            saveProducts(productsStorage);
-            window.location.reload();   
+            productsStorage[q] = newproductsStorage; 
+            saveProducts(productsStorage);                                                             
+            alert("la quantité a été modifié");            
+            window.location.reload();  
         });      
     }    
 }
