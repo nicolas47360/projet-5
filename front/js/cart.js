@@ -1,7 +1,26 @@
-const url = "http://localhost:3000/api/products"
-productsStorage = getProducts()
+const url = "http://localhost:3000/api/products/"
+productsStorage = getProducts();
 
-console.log(productsStorage)
+function API(id){
+    fetch(url + id)
+    .then((response) => response.json())
+    .then((data) => {        
+        return data
+    })
+
+}
+
+for (product of productsStorage){
+    fetch(url + product.id)
+    .then((response) => response.json())
+    .then((data) => {        
+        console.log(data)
+    })
+}
+
+
+
+
 // fonction permettant de sauvegarder les produits au format JSON dans le local storage
 function saveProducts(product)
 {
@@ -14,37 +33,52 @@ function getProducts()
 {    
     return JSON.parse(localStorage.getItem("product"));
 }
-
-//fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage
-function removeProducts()
+//fonction permettant de calculer et d'afficher le prix total de l'ensemble des produits contenus dans le local storage
+function getTotalPrice(){       
+    let totalPrice = 0;
+    for (let product of productsStorage)    
+    {   
+        fetch(url + product.id)
+        .then((response) => response.json())
+        .then((data) => {          
+        totalPrice += data.price * product.quantity;
+        const showPrice = document.getElementById('totalPrice');
+        showPrice.innerHTML = totalPrice;              
+    });
+    }        
+} 
+// fonction permettant de supprimer un produit lors du click sur le bouton supprimer et suppression dans le local storage et rafraichisement de la page
+function removeProducts ()
 {   
-    deleteProducts = document.getElementsByClassName("deleteItem");    
-    for ( i = 0; i < deleteProducts.length; i++){       
+    deleteProducts = document.getElementsByClassName('deleteItem');
+    for ( let i = 0; i < deleteProducts.length; i++)
+    {
         deleteProducts[i].addEventListener("click", (event) =>{
-            event.preventDefault()                       
+            event.preventDefault();            
             productsStorage.splice(i, 1);                     
             saveProducts(productsStorage);
             alert("le produit a bien été supprimé");
-            window.location.reload();       
+            window.location.reload();
         });      
     }   
 }
 
-
-//fonction permettant de modifier la quantité d'un produit lors du click et modification de la quantité dans le local storage
+//fonction permettant de modifier la quantité d'un produit lors du click et modification de la quantité dans le local storage et rafraichisement de la page
 function replaceQuantity()
 {
-   let productsQuantity = document.getElementsByClassName('itemQuantity');   
-   for ( let q = 0; q < productsQuantity.length; q++){
+   let productsQuantity = document.getElementsByClassName('itemQuantity');
+   for ( let q = 0; q < productsQuantity.length; q++)
+       {            
         productsQuantity[q].addEventListener("change", (event) =>{
-            event.preventDefault();                                  
+            event.preventDefault();
+            console.log(productsQuantity.length);                      
             newproductsStorage = productsStorage.find(p => p.id == productsStorage[q].id && p.color == productsStorage[q].color);                        
             let newQuantity = parseInt(productsQuantity[q].value, 10);
             newproductsStorage.quantity = newQuantity;
-            productsStorage[q] = newproductsStorage; 
-            saveProducts(productsStorage);                                                             
+            productsStorage[q] = newproductsStorage;
+            saveProducts(productsStorage);                                                              
             alert("la quantité a été modifié");            
-            window.location.reload();  
+            window.location.reload();   
         });      
     }    
 }
@@ -52,46 +86,30 @@ function replaceQuantity()
 //fonction permettant d'obtenir et d'afficher la quantité totale des produit contenus dans le local storage
 function getQuantityProduct()
 {        
-    let totalQuantity = 0;     
+    let totalQuantity = 0;
     for (let product of productsStorage)
-        {        
+    {
         totalQuantity += product.quantity;         
         const showQuantities = document.getElementById('totalQuantity');
         showQuantities.innerHTML = totalQuantity;             
     }
 }
 
-//fonction permettant de calculer et d'afficher le prix total de l'ensemble des produits contenus dans le local storage
-function getTotalPrice(){       
-    let totalPrice = 0;
-    for (let product of productsStorage)
-    {   fetch(url + "/" + product.id)
-        .then((response)=> response.json())
-        .then((data) => {            
-            totalPrice += data.price * product.quantity;
-            const showPrice = document.getElementById('totalPrice');
-            showPrice.innerHTML = totalPrice;
-        });                 
-    }        
-}
-
 //fonction permettant l' affichage des données contenues dans le local storage
 function showProducts(){
-    for (let product of productsStorage){
-        fetch(url + "/" + product.id)
-        .then((response)=> response.json())
-        .then((data) => {          
+    for (let product of productsStorage){ 
+                       
         document.getElementById("cart__items");    
-        cart__items.innerHTML +=`
+        cart__items.innerHTML =`
         <article class="cart__item" data-id=${product.id} data-color="${product.color}">
         <div class="cart__item__img">
-        <img src="${data.imageUrl}" alt="${data.altTxt}">
+        <img src="${product.imageUrl}" alt="${product.altTxt}">
         </div>
         <div class="cart__item__content">
         <div class="cart__item__content__description">
-            <h2>${data.name}</h2>
+            <h2>${product.name}</h2>
             <p>${product.color}</p>
-            <p>${data.price + "€"}</p>
+            <p>${product.price + "€"}</p>
         </div>
         <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
@@ -105,15 +123,17 @@ function showProducts(){
         </div>
         </article>
         `
-        });  
-    }
+        }
+
 }
-removeProducts();
-replaceQuantity();   
+
+
+
 getTotalPrice();
 getQuantityProduct();
 showProducts();
-
+removeProducts();
+replaceQuantity();
 
 //----------------------------FORMULAIRE----------------------------------------------------------
 
@@ -134,7 +154,7 @@ order.addEventListener("click", (event) => {
     };    
     //fonction permettant de gérer les erreurs de saisie du champ firstname 
     function regExpFirstName(){    
-        const ValidfisrtName = contact.fisrtName;    
+        const ValidfisrtName = contact.firstName;    
         const checkFirstName = document.getElementById('firstNameErrorMsg');    
         if ( validateName.test(ValidfisrtName))
         {
@@ -209,13 +229,13 @@ order.addEventListener("click", (event) => {
             
     };    
 
-    //fonction permettant de sauvegarder dans le localstorage le contact et le id du produit
+    //fonction permettant de sauvegarder dans le local storage le contact et le id du produit
     function saveContactAndOrder(productOrder)
     {
         localStorage.setItem("productOrder", JSON.stringify(productOrder))
     };
     
-    //fonction permettant de récupérer l' id des produits contenus dans le local storage
+    //fonction permettant de récupérer l'id des produits contenus dans le local storage
     function productId(){
         let products = [];    
         for( product of productsStorage){
@@ -229,7 +249,7 @@ order.addEventListener("click", (event) => {
     }   
     saveContactAndOrder(productOrder);
     
-    //fonction permettant d'envoyer les informations vers l'api si le formulaire est bien remplie
+    //fonction permettant d'envoyer les informations vers l'api si le formulaire est bien rempli
     function serverSend(){
         if(formCheck()){
             fetch("http://localhost:3000/api/products/order", {
